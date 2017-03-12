@@ -46,12 +46,16 @@ class RequestCode extends Enum {
 
 /** Instructions */
 
+RequestCode::SUCCESS;                 // 0
+RequestCode::ERROR;                   // 1
+
 RequestCode::hasConst('SUCCESS');     // TRUE
 RequestCode::hasConst('TEST');        // FALSE
 
 RequestCode::hasValue(1);             // TRUE
-RequestCode::hasValue('1');           // FALSE
-RequestCode::hasValue('1', FALSE);    // TRUE
+RequestCode::hasValue('1');           // TRUE
+// strict mode
+RequestCode::hasValue('1', TRUE);     // FALSE
 RequestCode::hasValue(9);             // FALSE
 
 RequestCode::constToValue('SUCCESS'); // 0

@@ -15,19 +15,19 @@ abstract class Enum
 {
 
     /**
-     * value => constName
+     * value => const name
      * @var array
      */
     protected $consts = [];
 
     /**
-     * constName => value
+     * const name => value
      * @var array
      */
     protected $constsRef = [];
 
     /**
-     * constName => chinese
+     * const name => display value
      * @var array
      */
     protected $keyMap = [];
@@ -73,9 +73,10 @@ abstract class Enum
      * 判断枚举中是否有这个值
      *
      * @param  mixed $value
+     * @param  boolean $strict
      * @return boolean
      */
-    protected function _hasValue($value, $strict = TRUE)
+    protected function _hasValue($value, $strict = FALSE)
     {
         return in_array($value, $this->consts, $strict);
     }
