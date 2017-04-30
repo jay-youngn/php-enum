@@ -13,6 +13,7 @@ composer require ginnerpeace/php-enum
 ```
 
 ### Example
+Create a class for an enum data, like this:
 ```php
 <?php
 
@@ -37,7 +38,7 @@ class RequestCode extends Enum {
      */
     CONST ERROR = 1;
 
-    CONST __MAP = [
+    CONST __DICT = [
         self::SUCCESS => 'request success',
         self::ERROR => 'request failure',
     ];

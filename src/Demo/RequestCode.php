@@ -21,7 +21,10 @@ class RequestCode extends Enum {
      */
     CONST ERROR = 1;
 
-    CONST __MAP = [
+    /**
+     * the display value for view
+     */
+    CONST __DICT = [
         self::SUCCESS => 'request success',
         self::ERROR => 'request failure',
     ];
