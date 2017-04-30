@@ -6,14 +6,13 @@ use ReflectionClass;
 use UnexpectedValueException;
 
 /**
- * basic class
+ * php enum basic class
  *
  * @author gjy <ginnerpeace@live.com>
  * @link https://github.com/ginnerpeace/php-enum
  */
 abstract class Enum
 {
-
     /**
      * value => const name
      * @var array
@@ -33,56 +32,55 @@ abstract class Enum
     protected $keyMap = [];
 
     /**
-     * 保存子类实例
+     * Save instance
      * @var array
      */
     private static $__instance = [];
 
+    /**
+     * Create const list for current class.
+     */
     public function __construct()
     {
         $ref = new ReflectionClass($this->_getClass());
-        $constants = $ref->getConstants();
-
-        unset($constants['__MAP']);
-
-        // get const name
-        $nameMap = array_flip($constants);
 
         // const->value
-        $this->consts = $constants;
+        $this->consts = $ref->getConstants();
+
         // value->const
-        $this->constsRef = $nameMap;
+        $this->constsRef = array_flip($this->consts);
+
         // const->text
-        foreach ($nameMap as $k => $v) {
-            $this->keyMap[$v] = static::__MAP[$k];
+        foreach ($this->constsRef as $k => $v) {
+            $this->keyMap[$v] = static::__DICT[$k];
         }
     }
 
     /**
-     * 判断是否有此名称的枚举
+     * Checks if the given constant name exists in the enum.
      *
      * @param  string $constName
      * @return boolean
      */
     protected function _hasConst($constName)
     {
-        return in_array($constName, $this->constsRef, TRUE);
+        return in_array($constName, $this->constsRef, true);
     }
 
     /**
-     * 判断枚举中是否有这个值
+     * Checks if the given value exists in the enum.
      *
      * @param  mixed $value
      * @param  boolean $strict
      * @return boolean
      */
-    protected function _hasValue($value, $strict = FALSE)
+    protected function _hasValue($value, $strict = false)
     {
         return in_array($value, $this->consts, $strict);
     }
 
     /**
-     * 名称转换值
+     * Translate the given constant name to the value.
      *
      * @param  string $constName
      * @throws UnexpectedValueException
@@ -98,7 +96,7 @@ abstract class Enum
     }
 
     /**
-     * 值转名称
+     * Translate the given value to the constant name.
      *
      * @param  mixed $value
      * @throws UnexpectedValueException
@@ -114,7 +112,7 @@ abstract class Enum
     }
 
     /**
-     * 枚举名称转中文
+     * Translate the given constant name to the display value.
      *
      * @param  string $constName
      * @return string
@@ -129,7 +127,7 @@ abstract class Enum
     }
 
     /**
-     * 值转中文
+     * Translate the given value to the display value.
      *
      * @param  mixed $value
      * @return string
@@ -137,13 +135,13 @@ abstract class Enum
     protected function _transValue($value)
     {
         if ($this->_hasValue($value)) {
-            return static::__MAP[$value];
+            return static::__DICT[$value];
         }
 
         return $value;
     }
 
-    /** getter */
+    /** getters */
 
     protected function _getConsts()
     {
@@ -157,7 +155,7 @@ abstract class Enum
 
     protected function _getMap()
     {
-        return static::__MAP;
+        return static::__DICT;
     }
 
     protected function _getKeyMap()
@@ -171,9 +169,9 @@ abstract class Enum
     }
 
     /**
-     * 使用静态方法创建并保存类对象的实例
+     * Get current class instance from a static variable.
      *
-     * @return object
+     * @return PHPEnum\Enum
      */
     public static function getInstance()
     {
@@ -185,20 +183,21 @@ abstract class Enum
     }
 
     /**
-     * __callStatic
-     * 以静态方式调用protected方法
-     * 如:
-     * 1. xxxEnum::hasConst('CONST_NAME')
-     *   // 实际上调用了 $xxxEnum->_hasConst('CONST_NAME')
-     * 2. xxxEnum::getMap()
-     *   // 实际上调用了 $xxxEnum->_getMap()
      *
-     * @param  string $func
+     * Call the protected method statically.
+     *
+     * example:
+     * 1. xxxEnum::hasConst('CONST_NAME')
+     * // Actually called: $xxxEnum->_hasConst('CONST_NAME')
+     * 2. xxxEnum::getMap()
+     * // Actually called: $xxxEnum->_getMap()
+     *
+     * @param  string $method
      * @param  array $arguments
      * @return mixed
      */
-    public static function __callStatic($func, $arguments)
+    public static function __callStatic($method, $arguments)
     {
-        return call_user_func_array([self::getInstance(), '_' . $func], $arguments);
+        return call_user_func_array([self::getInstance(), '_' . $method], $arguments);
     }
 }
