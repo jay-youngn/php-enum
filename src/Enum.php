@@ -29,7 +29,7 @@ abstract class Enum
      * const name => display value
      * @var array
      */
-    protected $keyMap = [];
+    protected $keyDict = [];
 
     /**
      * Save instance
@@ -42,17 +42,17 @@ abstract class Enum
      */
     public function __construct()
     {
-        $ref = new ReflectionClass($this->_getClass());
-
         // const->value
-        $this->consts = $ref->getConstants();
+        $this->consts = (new ReflectionClass($this->_getClass()))->getConstants();
+
+        unset($this->consts['__DICT']);
 
         // value->const
         $this->constsRef = array_flip($this->consts);
 
         // const->text
         foreach ($this->constsRef as $k => $v) {
-            $this->keyMap[$v] = static::__DICT[$k];
+            $this->keyDict[$v] = static::__DICT[$k];
         }
     }
 
@@ -89,7 +89,7 @@ abstract class Enum
     protected function _constToValue($constName)
     {
         if (!$this->_hasConst($constName)) {
-            throw new UnexpectedValueException("Const {$constName} is not in Enum" . $this->_getClass());
+            throw new UnexpectedValueException("Const {$constName} is not in Enum " . $this->_getClass());
         }
 
         return $this->consts[$constName];
@@ -105,7 +105,7 @@ abstract class Enum
     protected function _valueToConst($value)
     {
         if (!$this->_hasValue($value)) {
-            throw new UnexpectedValueException("Value {$value} is not in Enum" . $this->_getClass());
+            throw new UnexpectedValueException("Value {$value} is not in Enum " . $this->_getClass());
         }
 
         return $this->constsRef[$value];
@@ -120,7 +120,7 @@ abstract class Enum
     protected function _transConst($constName)
     {
         if ($this->_hasConst($constName)) {
-            return $this->keyMap[$constName];
+            return $this->keyDict[$constName];
         }
 
         return $constName;
@@ -153,19 +153,29 @@ abstract class Enum
         return $this->constsRef;
     }
 
-    protected function _getMap()
+    protected function _getDict()
     {
         return static::__DICT;
     }
 
-    protected function _getKeyMap()
+    protected function _getKeyDict()
     {
-        return $this->keyMap;
+        return $this->keyDict;
     }
 
     protected function _getClass()
     {
         return static::class;
+    }
+
+    /**
+     * create new instance
+     *
+     * @return void
+     */
+    private static function __create()
+    {
+        self::$__instance[static::class] = new static;
     }
 
     /**
@@ -175,8 +185,8 @@ abstract class Enum
      */
     public static function getInstance()
     {
-        if (empty(self::$__instance[static::class]) || !self::$__instance[static::class] instanceof static) {
-            self::$__instance[static::class] = new static;
+        if (empty(self::$__instance[static::class])) {
+            self::__create();
         }
 
         return self::$__instance[static::class];
@@ -189,8 +199,8 @@ abstract class Enum
      * example:
      * 1. xxxEnum::hasConst('CONST_NAME')
      * // Actually called: $xxxEnum->_hasConst('CONST_NAME')
-     * 2. xxxEnum::getMap()
-     * // Actually called: $xxxEnum->_getMap()
+     * 2. xxxEnum::getDict()
+     * // Actually called: $xxxEnum->_getDict()
      *
      * @param  string $method
      * @param  array $arguments
