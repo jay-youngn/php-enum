@@ -14,22 +14,40 @@ use UnexpectedValueException;
 abstract class Enum
 {
     /**
-     * value => const name
-     * @var array
+     * Name of current Enum data.
+     * @var string
      */
-    protected $consts = [];
+    protected $name;
 
     /**
+     * Value of current Enum data.
+     * @var integer|string
+     */
+    protected $value;
+
+    /**
+     * Map of Enum values.
+     *
      * const name => value
      * @var array
      */
-    protected $constsRef = [];
+    protected $valueMap = [];
 
     /**
+     * Map of Enum names.
+     *
+     * value => const name
+     * @var array
+     */
+    protected $nameMap = [];
+
+    /**
+     * Constant name dictionary.
+     *
      * const name => display value
      * @var array
      */
-    protected $keyDict = [];
+    protected $nameDict = [];
 
     /**
      * Save instance
@@ -40,19 +58,24 @@ abstract class Enum
     /**
      * Create const list for current class.
      */
-    public function __construct()
+    public function __construct($value = null)
     {
-        // const->value
-        $this->consts = (new ReflectionClass($this->_getClass()))->getConstants();
+        // const name -> value
+        $this->valueMap = (new ReflectionClass($this->_getClass()))->getConstants();
 
-        unset($this->consts['__DICT']);
+        unset($this->valueMap['__DICT']);
 
-        // value->const
-        $this->constsRef = array_flip($this->consts);
+        // value -> const name
+        $this->nameMap = array_flip($this->valueMap);
 
-        // const->text
-        foreach ($this->constsRef as $k => $v) {
-            $this->keyDict[$v] = static::__DICT[$k];
+        if (! is_null($value)) {
+            $this->name = $this->_valueToName($value);
+            $this->value = $value;
+        }
+
+        // constname -> display text
+        foreach ($this->nameMap as $k => $v) {
+            $this->nameDict[$v] = static::__DICT[$k];
         }
     }
 
@@ -62,9 +85,9 @@ abstract class Enum
      * @param  string $constName
      * @return boolean
      */
-    protected function _hasConst($constName)
+    protected function _hasName($constName)
     {
-        return in_array($constName, $this->constsRef, true);
+        return in_array($constName, $this->nameMap, true);
     }
 
     /**
@@ -76,7 +99,7 @@ abstract class Enum
      */
     protected function _hasValue($value, $strict = false)
     {
-        return in_array($value, $this->consts, $strict);
+        return in_array($value, $this->valueMap, $strict);
     }
 
     /**
@@ -86,13 +109,13 @@ abstract class Enum
      * @throws UnexpectedValueException
      * @return mixed
      */
-    protected function _constToValue($constName)
+    protected function _nameToValue($constName)
     {
-        if (!$this->_hasConst($constName)) {
+        if (! $this->_hasName($constName)) {
             throw new UnexpectedValueException("Const {$constName} is not in Enum " . $this->_getClass());
         }
 
-        return $this->consts[$constName];
+        return $this->valueMap[$constName];
     }
 
     /**
@@ -102,13 +125,13 @@ abstract class Enum
      * @throws UnexpectedValueException
      * @return string
      */
-    protected function _valueToConst($value)
+    protected function _valueToName($value)
     {
-        if (!$this->_hasValue($value)) {
+        if (! $this->_hasValue($value)) {
             throw new UnexpectedValueException("Value {$value} is not in Enum " . $this->_getClass());
         }
 
-        return $this->constsRef[$value];
+        return $this->nameMap[$value];
     }
 
     /**
@@ -117,10 +140,10 @@ abstract class Enum
      * @param  string $constName
      * @return string
      */
-    protected function _transConst($constName)
+    protected function _transName($constName)
     {
-        if ($this->_hasConst($constName)) {
-            return $this->keyDict[$constName];
+        if ($this->_hasName($constName)) {
+            return $this->nameDict[$constName];
         }
 
         return $constName;
@@ -143,14 +166,24 @@ abstract class Enum
 
     /** getters */
 
-    protected function _getConsts()
+    public function getName()
     {
-        return $this->consts;
+        return $this->name;
     }
 
-    protected function _getConstsRef()
+    public function getValue()
     {
-        return $this->constsRef;
+        return $this->value;
+    }
+
+    protected function _getMap()
+    {
+        return $this->valueMap;
+    }
+
+    protected function _getNameMap()
+    {
+        return $this->nameMap;
     }
 
     protected function _getDict()
@@ -158,9 +191,9 @@ abstract class Enum
         return static::__DICT;
     }
 
-    protected function _getKeyDict()
+    protected function _getNameDict()
     {
-        return $this->keyDict;
+        return $this->nameDict;
     }
 
     protected function _getClass()
@@ -192,13 +225,18 @@ abstract class Enum
         return self::$__instance[static::class];
     }
 
+    public function __toString()
+    {
+        return $this->value;
+    }
+
     /**
      *
      * Call the protected method statically.
      *
      * example:
-     * 1. xxxEnum::hasConst('CONST_NAME')
-     * // Actually called: $xxxEnum->_hasConst('CONST_NAME')
+     * 1. xxxEnum::hasName('CONST_NAME')
+     * // Actually called: $xxxEnum->_hasName('CONST_NAME')
      * 2. xxxEnum::getDict()
      * // Actually called: $xxxEnum->_getDict()
      *
@@ -209,5 +247,25 @@ abstract class Enum
     public static function __callStatic($method, $arguments)
     {
         return call_user_func_array([self::getInstance(), '_' . $method], $arguments);
+    }
+
+    /**
+     *
+     * Call the protected method in new instance.
+     *
+     * example:
+     * 1. (new Enum(1))->hasConst('CONST_NAME')
+     * // Actually called: $xxxEnum->_hasName('CONST_NAME')
+     * 2. (new Enum(1))->getDict()
+     * // Actually called: $xxxEnum->_getDict()
+     * 3. (new Enum(1))->getName()
+     *
+     * @param  string $method
+     * @param  array $arguments
+     * @return mixed
+     */
+    public static function __call($method, $arguments)
+    {
+        return call_user_func_array([$this, '_' . $method], $arguments);
     }
 }
