@@ -227,7 +227,7 @@ abstract class Enum
 
     public function __toString()
     {
-        return $this->value;
+        return (string) $this->value;
     }
 
     /**
