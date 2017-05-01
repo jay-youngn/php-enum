@@ -97,7 +97,7 @@ abstract class Enum
      * @param  boolean $strict
      * @return boolean
      */
-    protected function _hasValue($value, $strict = false)
+    protected function _hasValue($value, $strict = true)
     {
         return in_array($value, $this->valueMap, $strict);
     }
@@ -264,7 +264,7 @@ abstract class Enum
      * @param  array $arguments
      * @return mixed
      */
-    public static function __call($method, $arguments)
+    public function __call($method, $arguments)
     {
         return call_user_func_array([$this, '_' . $method], $arguments);
     }
