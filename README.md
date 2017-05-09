@@ -50,49 +50,51 @@ class RequestCode extends Enum {
 RequestCode::SUCCESS;                 // 0
 RequestCode::ERROR;                   // 1
 
-RequestCode::hasConst('SUCCESS');     // TRUE
-RequestCode::hasConst('TEST');        // FALSE
+RequestCode::hasName('SUCCESS');     // TRUE
+RequestCode::hasName('TEST');        // FALSE
 
+// 默认 strict mode
 RequestCode::hasValue(1);             // TRUE
-RequestCode::hasValue('1');           // TRUE
-// strict mode
-RequestCode::hasValue('1', TRUE);     // FALSE
+RequestCode::hasValue('1');           // FALSE
+
+// 传参不使用 strict mode
+RequestCode::hasValue('1', FALSE);    // TRUE
 RequestCode::hasValue(9);             // FALSE
 
-RequestCode::constToValue('SUCCESS'); // 0
-RequestCode::constToValue('TEST');    // throw UnexpectedValueException
+RequestCode::nameToValue('SUCCESS'); // 0
+RequestCode::nameToValue('TEST');    // throw UnexpectedValueException
 
-RequestCode::valueToConst(1);         // 'ERROR'
-RequestCode::valueToConst(9);         // throw UnexpectedValueException
+RequestCode::valueToName(1);         // 'ERROR'
+RequestCode::valueToName(9);         // throw UnexpectedValueException
 
-RequestCode::transConst('ERROR');     // 'request failure'
-RequestCode::transConst('TEST');      // 'TEST'
+RequestCode::transName('ERROR');     // 'request failure'
+RequestCode::transName('TEST');      // 'TEST'
 
 RequestCode::transValue(0);           // 'request success'
 RequestCode::transValue(9);           // 9
 
-RequestCode::getConsts();
-return:
-[
-    0 => 'SUCCESS',
-    1 => 'ERROR',
-]
-
-RequestCode::getConstsRef();
+RequestCode::getMap();
 return:
 [
     'SUCCESS' => 0,
     'ERROR' => 1,
 ]
 
-RequestCode::getMap();
+RequestCode::getNameMap();
+return:
+[
+    0 => 'SUCCESS',
+    1 => 'ERROR',
+]
+
+RequestCode::getDict();
 return:
 [
     0 => 'request success',
     1 => 'request failure',
 ]
 
-RequestCode::getKeyMap();
+RequestCode::getNameDict();
 return:
 [
     'SUCCESS' => 'request success',
