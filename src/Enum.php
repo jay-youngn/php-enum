@@ -254,7 +254,7 @@ abstract class Enum
      * Call the protected method in new instance.
      *
      * example:
-     * 1. (new Enum(1))->hasConst('CONST_NAME')
+     * 1. (new Enum(1))->hasName('CONST_NAME')
      * // Actually called: $xxxEnum->_hasName('CONST_NAME')
      * 2. (new Enum(1))->getDict()
      * // Actually called: $xxxEnum->_getDict()
