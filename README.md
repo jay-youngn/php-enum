@@ -24,7 +24,8 @@ use PHPEnum\Enum;
 /**
  * custom global request code
  */
-class RequestCode extends Enum {
+class RequestCode extends Enum
+{
 
     /**
      * request success
@@ -47,31 +48,31 @@ class RequestCode extends Enum {
 
 /** Instructions */
 
-RequestCode::SUCCESS;                 // 0
-RequestCode::ERROR;                   // 1
+RequestCode::SUCCESS;                   // 0
+RequestCode::ERROR;                     // 1
 
-RequestCode::hasName('SUCCESS');     // TRUE
-RequestCode::hasName('TEST');        // FALSE
+RequestCode::hasName('SUCCESS');        // TRUE
+RequestCode::hasName('TEST');           // FALSE
 
 // 默认 strict mode
-RequestCode::hasValue(1);             // TRUE
-RequestCode::hasValue('1');           // FALSE
+RequestCode::hasValue(1);               // TRUE
+RequestCode::hasValue('1');             // FALSE
 
 // 传参不使用 strict mode
-RequestCode::hasValue('1', FALSE);    // TRUE
-RequestCode::hasValue(9);             // FALSE
+RequestCode::hasValue('1', FALSE);      // TRUE
+RequestCode::hasValue(9);               // FALSE
 
-RequestCode::nameToValue('SUCCESS'); // 0
-RequestCode::nameToValue('TEST');    // throw UnexpectedValueException
+RequestCode::nameToValue('SUCCESS');    // 0
+RequestCode::nameToValue('TEST');       // throw UnexpectedValueException
 
-RequestCode::valueToName(1);         // 'ERROR'
-RequestCode::valueToName(9);         // throw UnexpectedValueException
+RequestCode::valueToName(1);            // 'ERROR'
+RequestCode::valueToName(9);            // throw UnexpectedValueException
 
-RequestCode::transName('ERROR');     // 'request failure'
-RequestCode::transName('TEST');      // 'TEST'
+RequestCode::transName('ERROR');        // 'request failure'
+RequestCode::transName('TEST');         // 'TEST'
 
-RequestCode::transValue(0);           // 'request success'
-RequestCode::transValue(9);           // 9
+RequestCode::transValue(0);             // 'request success'
+RequestCode::transValue(9);             // 9
 
 RequestCode::getMap();
 return:
