@@ -1,0 +1,6 @@
+/vendor
+.tags
+.tags_sorted_by_file
+composer.lock
+*.swp
+
