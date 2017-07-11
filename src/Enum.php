@@ -6,7 +6,7 @@ use ReflectionClass;
 use UnexpectedValueException;
 
 /**
- * php enum basic class
+ * basic class for php enum.
  *
  * @author gjy <ginnerpeace@live.com>
  * @link https://github.com/ginnerpeace/php-enum
@@ -206,7 +206,7 @@ abstract class Enum
      *
      * @return void
      */
-    private static function __create()
+    private static function createInstance()
     {
         self::$__instance[static::class] = new static;
     }
@@ -219,7 +219,7 @@ abstract class Enum
     public static function getInstance()
     {
         if (empty(self::$__instance[static::class])) {
-            self::__create();
+            self::createInstance();
         }
 
         return self::$__instance[static::class];
