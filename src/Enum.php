@@ -7,6 +7,12 @@ use UnexpectedValueException;
 
 /**
  * basic class for php enum.
+ *          _
+ *     __ _(_)_ __  _ __   ___ _ __ _ __   ___  __ _  ___ ___
+ *    / _` | | '_ \| '_ \ / _ \ '__| '_ \ / _ \/ _` |/ __/ _ \
+ *   | (_| | | | | | | | |  __/ |  | |_) |  __/ (_| | (_|  __/
+ *    \__, |_|_| |_|_| |_|\___|_|  | .__/ \___|\__,_|\___\___|
+ *    |___/                        |_|
  *
  * @author gjy <ginnerpeace@live.com>
  * @link https://github.com/ginnerpeace/php-enum
