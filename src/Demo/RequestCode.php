@@ -7,8 +7,8 @@ use PHPEnum\Enum;
 /**
  * custom global request code
  */
-class RequestCode extends Enum {
-
+class RequestCode extends Enum
+{
     /**
      * request success
      * @var integer

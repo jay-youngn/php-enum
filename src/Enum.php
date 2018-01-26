@@ -6,7 +6,7 @@ use ReflectionClass;
 use UnexpectedValueException;
 
 /**
- * basic class for php enum.
+ * Basic class for php enum.
  *          _
  *     __ _(_)_ __  _ __   ___ _ __ _ __   ___  __ _  ___ ___
  *    / _` | | '_ \| '_ \ / _ \ '__| '_ \ / _ \/ _` |/ __/ _ \
@@ -238,25 +238,6 @@ abstract class Enum
 
     /**
      *
-     * Call the protected method statically.
-     *
-     * example:
-     * 1. xxxEnum::hasName('CONST_NAME')
-     * // Actually called: $xxxEnum->_hasName('CONST_NAME')
-     * 2. xxxEnum::getDict()
-     * // Actually called: $xxxEnum->_getDict()
-     *
-     * @param  string $method
-     * @param  array $arguments
-     * @return mixed
-     */
-    public static function __callStatic($method, $arguments)
-    {
-        return call_user_func_array([self::getInstance(), '_' . $method], $arguments);
-    }
-
-    /**
-     *
      * Call the protected method in new instance.
      *
      * example:
@@ -273,5 +254,24 @@ abstract class Enum
     public function __call($method, $arguments)
     {
         return call_user_func_array([$this, '_' . $method], $arguments);
+    }
+
+    /**
+     *
+     * Call the protected method statically.
+     *
+     * example:
+     * 1. xxxEnum::hasName('CONST_NAME')
+     * // Actually called: $xxxEnum->_hasName('CONST_NAME')
+     * 2. xxxEnum::getDict()
+     * // Actually called: $xxxEnum->_getDict()
+     *
+     * @param  string $method
+     * @param  array $arguments
+     * @return mixed
+     */
+    public static function __callStatic($method, $arguments)
+    {
+        return call_user_func_array([self::getInstance(), '_' . $method], $arguments);
     }
 }

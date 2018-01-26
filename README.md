@@ -1,11 +1,11 @@
 # php-enum
-用PHP实现枚举
 
-- This class gives the ability to emulate and get enumeration data natively in PHP.
+> This class gives the ability to emulate and get enumeration data natively in PHP.
+
 - You can convert enum values easily.
 - requires php>=5.6.0, because array constant are used.
 
-## Get started
+## Getting started
 
 ### Install
 ```shell
@@ -26,54 +26,62 @@ use PHPEnum\Enum;
  */
 class RequestCode extends Enum
 {
-
-    /**
-     * request success
-     * @var integer
-     */
     CONST SUCCESS = 0;
-
-    /**
-     * request failure
-     * @var integer
-     */
     CONST ERROR = 1;
 
     CONST __DICT = [
         self::SUCCESS => 'request success',
-        self::ERROR => 'request failure',
+        self::ERROR   => 'request failure',
     ];
-
 }
+```
 
-/** Instructions */
+### Use
+```php
+<?php
 
+// Use value.
+////////////////////////////////////////////////////////////////////////////
 RequestCode::SUCCESS;                   // 0
 RequestCode::ERROR;                     // 1
+////////////////////////////////////////////////////////////////////////////
 
-RequestCode::hasName('SUCCESS');        // TRUE
-RequestCode::hasName('TEST');           // FALSE
+// Determine if the name has been in Enum.
+////////////////////////////////////////////////////////////////////////////
+RequestCode::hasName('SUCCESS');        // true
+RequestCode::hasName('TEST');           // false
+////////////////////////////////////////////////////////////////////////////
 
-// 默认 strict mode
-RequestCode::hasValue(1);               // TRUE
-RequestCode::hasValue('1');             // FALSE
+// Determine if the name has been in Enum.
+// Using strict comparison usually, unless strict is set to false.
+////////////////////////////////////////////////////////////////////////////
+RequestCode::hasValue(1);               // true
+RequestCode::hasValue('1');             // false
 
-// 传参不使用 strict mode
-RequestCode::hasValue('1', FALSE);      // TRUE
-RequestCode::hasValue(9);               // FALSE
+RequestCode::hasValue('1', false);      // true
+RequestCode::hasValue(9);               // false
+////////////////////////////////////////////////////////////////////////////
 
+// Value & Name, convert each other.
+////////////////////////////////////////////////////////////////////////////
 RequestCode::nameToValue('SUCCESS');    // 0
 RequestCode::nameToValue('TEST');       // throw UnexpectedValueException
 
 RequestCode::valueToName(1);            // 'ERROR'
 RequestCode::valueToName(9);            // throw UnexpectedValueException
+////////////////////////////////////////////////////////////////////////////
 
+// Translate the given constant name/value to the display value.
+////////////////////////////////////////////////////////////////////////////
 RequestCode::transName('ERROR');        // 'request failure'
 RequestCode::transName('TEST');         // 'TEST'
 
 RequestCode::transValue(0);             // 'request success'
 RequestCode::transValue(9);             // 9
+////////////////////////////////////////////////////////////////////////////
 
+// Some Getter methods.
+////////////////////////////////////////////////////////////////////////////
 RequestCode::getMap();
 return:
 [
@@ -101,5 +109,5 @@ return:
     'SUCCESS' => 'request success',
     'ERROR' => 'request failure',
 ]
-
+////////////////////////////////////////////////////////////////////////////
 ```
