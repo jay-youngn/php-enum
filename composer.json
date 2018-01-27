@@ -1,7 +1,7 @@
 {
 	"name": "ginnerpeace/php-enum",
 	"homepage": "https://github.com/ginnerpeace/php-enum",
-	"description": "用PHP实现枚举",
+	"description": "This class gives the ability to emulate and get enumeration data natively in PHP.",
 	"license": "MIT",
 	"authors": [
 		{
@@ -13,7 +13,7 @@
 		"php": ">=5.6.0"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^6.1"
+		"phpunit/phpunit": "^6.5"
 	},
 	"autoload": {
 		"psr-4": {

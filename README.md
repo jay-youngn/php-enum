@@ -37,51 +37,43 @@ class RequestCode extends Enum
 ```
 
 ### Use
+#### - Scope Resolution Operator
 ```php
 <?php
 
+use PHPEnum\Demo\RequestCode;
+
 // Use value.
-////////////////////////////////////////////////////////////////////////////
 RequestCode::SUCCESS;                   // 0
 RequestCode::ERROR;                     // 1
-////////////////////////////////////////////////////////////////////////////
 
 // Determine if the name has been in Enum.
-////////////////////////////////////////////////////////////////////////////
 RequestCode::hasName('SUCCESS');        // true
 RequestCode::hasName('TEST');           // false
-////////////////////////////////////////////////////////////////////////////
 
 // Determine if the name has been in Enum.
 // Using strict comparison usually, unless strict is set to false.
-////////////////////////////////////////////////////////////////////////////
 RequestCode::hasValue(1);               // true
 RequestCode::hasValue('1');             // false
 
 RequestCode::hasValue('1', false);      // true
 RequestCode::hasValue(9);               // false
-////////////////////////////////////////////////////////////////////////////
 
 // Value & Name, convert each other.
-////////////////////////////////////////////////////////////////////////////
 RequestCode::nameToValue('SUCCESS');    // 0
 RequestCode::nameToValue('TEST');       // throw UnexpectedValueException
 
 RequestCode::valueToName(1);            // 'ERROR'
 RequestCode::valueToName(9);            // throw UnexpectedValueException
-////////////////////////////////////////////////////////////////////////////
 
 // Translate the given constant name/value to the display value.
-////////////////////////////////////////////////////////////////////////////
 RequestCode::transName('ERROR');        // 'request failure'
 RequestCode::transName('TEST');         // 'TEST'
 
 RequestCode::transValue(0);             // 'request success'
 RequestCode::transValue(9);             // 9
-////////////////////////////////////////////////////////////////////////////
 
 // Some Getter methods.
-////////////////////////////////////////////////////////////////////////////
 RequestCode::getMap();
 return:
 [
@@ -109,5 +101,45 @@ return:
     'SUCCESS' => 'request success',
     'ERROR' => 'request failure',
 ]
-////////////////////////////////////////////////////////////////////////////
+```
+
+#### - Instantiable
+```php
+<?php
+
+use PHPEnum\Demo\RequestCode;
+
+// create instance via value
+$requestSuccess = new RequestCode(0);
+$requestSuccess->getName();  // SUCCESS
+$requestSuccess->getValue(); // 0
+
+// __toString
+echo $requestSuccess; // '0'
+
+// Same as Staticable use.
+// It is implemented in __call and __callStatic
+$requestSuccess->getNameDict();
+return:
+[
+    'SUCCESS' => 'request success',
+    'ERROR' => 'request failure',
+]
+
+// var_dump($requestSuccess)
+object(PHPEnum\Demo\RequestCode)
+  protected 'name' => string 'SUCCESS'
+  protected 'value' => int 0
+  protected 'valueMap' =>
+    array (size=2)
+      'SUCCESS' => int 0
+      'ERROR' => int 1
+  protected 'nameMap' =>
+    array (size=2)
+      0 => string 'SUCCESS'
+      1 => string 'ERROR'
+  protected 'nameDict' =>
+    array (size=2)
+      'SUCCESS' => string 'request success'
+      'ERROR' => string 'request failure'
 ```
