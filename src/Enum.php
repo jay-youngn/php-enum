@@ -7,7 +7,7 @@ use UnexpectedValueException;
 
 /**
  * Basic class for php enum.
- *          _
+ *
  *     __ _(_)_ __  _ __   ___ _ __ _ __   ___  __ _  ___ ___
  *    / _` | | '_ \| '_ \ / _ \ '__| '_ \ / _ \/ _` |/ __/ _ \
  *   | (_| | | | | | | | |  __/ |  | |_) |  __/ (_| | (_|  __/
@@ -245,7 +245,6 @@ abstract class Enum
      * // Actually called: $xxxEnum->_hasName('CONST_NAME')
      * 2. (new Enum(1))->getDict()
      * // Actually called: $xxxEnum->_getDict()
-     * 3. (new Enum(1))->getName()
      *
      * @param  string $method
      * @param  array $arguments
