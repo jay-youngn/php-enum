@@ -1,5 +1,10 @@
 # php-enum
 
+[![Total Downloads](https://poser.pugx.org/ginnerpeace/php-enum/downloads.svg)](https://packagist.org/packages/ginnerpeace/php-enum)
+[![Latest Stable Version](https://poser.pugx.org/ginnerpeace/php-enum/v/stable.svg)](https://packagist.org/packages/ginnerpeace/php-enum)
+[![Latest Unstable Version](https://poser.pugx.org/ginnerpeace/php-enum/v/unstable.svg)](https://packagist.org/packages/ginnerpeace/php-enum)
+[![License](https://poser.pugx.org/ginnerpeace/php-enum/license.svg)](https://packagist.org/packages/ginnerpeace/php-enum)
+
 > This class gives the ability to emulate and get enumeration data natively in PHP.
 
 - You can convert enum values easily.
