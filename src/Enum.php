@@ -22,14 +22,14 @@ abstract class Enum
 {
     /**
      * Name of current Enum data.
-
+     *
      * @var string
      */
     protected $name;
 
     /**
      * Value of current Enum data.
-
+     *
      * @var int|string
      */
     protected $value;
