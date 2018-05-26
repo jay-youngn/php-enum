@@ -21,7 +21,6 @@ class BaseTest extends TestCase
         $this->assertTrue(method_exists($emptyEnum, '_getNameMap'));
         $this->assertTrue(method_exists($emptyEnum, '_getDict'));
         $this->assertTrue(method_exists($emptyEnum, '_getNameDict'));
-        $this->assertTrue(method_exists($emptyEnum, '_getClass'));
 
         $this->assertTrue(method_exists($emptyEnum, '_hasName'));
         $this->assertTrue(method_exists($emptyEnum, '_hasValue'));
