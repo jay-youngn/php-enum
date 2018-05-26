@@ -3,6 +3,7 @@
 namespace PHPEnum;
 
 use ReflectionClass;
+use BadMethodCallException;
 use UnexpectedValueException;
 
 /**
@@ -67,7 +68,7 @@ abstract class Enum
     public function __construct($value = null)
     {
         // const name -> value
-        $this->valueMap = (new ReflectionClass($this->_getClass()))->getConstants();
+        $this->valueMap = (new ReflectionClass(static::class))->getConstants();
 
         unset($this->valueMap['__DICT']);
 
@@ -118,7 +119,7 @@ abstract class Enum
     protected function _nameToValue($constName)
     {
         if (! $this->_hasName($constName)) {
-            throw new UnexpectedValueException("Const {$constName} is not in Enum " . $this->_getClass());
+            throw new UnexpectedValueException("Const {$constName} is not in Enum " . static::class);
         }
 
         return $this->valueMap[$constName];
@@ -134,7 +135,7 @@ abstract class Enum
     protected function _valueToName($value)
     {
         if (! $this->_hasValue($value)) {
-            throw new UnexpectedValueException("Value {$value} is not in Enum " . $this->_getClass());
+            throw new UnexpectedValueException("Value {$value} is not in Enum " . static::class);
         }
 
         return $this->nameMap[$value];
@@ -202,30 +203,25 @@ abstract class Enum
         return $this->nameDict;
     }
 
-    protected function _getClass()
-    {
-        return static::class;
-    }
-
     /**
-     * create new instance
+     * Create new instance for current class.
      *
-     * @return void
+     * @return static
      */
     private static function createInstance()
     {
-        self::$__instance[static::class] = new static;
+        return new static;
     }
 
     /**
-     * Get current class instance from a static variable.
+     * Get current class instance from the static attribute.
      *
      * @return PHPEnum\Enum
      */
     public static function getInstance()
     {
         if (empty(self::$__instance[static::class])) {
-            self::createInstance();
+            self::$__instance[static::class] = self::createInstance();
         }
 
         return self::$__instance[static::class];
@@ -237,14 +233,15 @@ abstract class Enum
     }
 
     /**
-     *
-     * Call the protected method in new instance.
+     * Call the helper method which starts with underscore.
      *
      * example:
+     *
      * 1. (new Enum(1))->hasName('CONST_NAME')
-     * // Actually called: $xxxEnum->_hasName('CONST_NAME')
+     *    Actually called: $xxxEnum->_hasName('CONST_NAME')
+     *
      * 2. (new Enum(1))->getDict()
-     * // Actually called: $xxxEnum->_getDict()
+     *    Actually called: $xxxEnum->_getDict()
      *
      * @param  string $method
      * @param  array $arguments
@@ -252,18 +249,26 @@ abstract class Enum
      */
     public function __call($method, $arguments)
     {
-        return call_user_func_array([$this, '_' . $method], $arguments);
+        if (! method_exists($this, $invoking = '_' . $method)) {
+            throw new BadMethodCallException('Method ' . $invoking . ' does not exists');
+        }
+
+        return call_user_func_array([$this, $invoking], $arguments);
     }
 
     /**
-     *
-     * Call the protected method statically.
+     * Call some helper method statically.
+     * Overloading to __call
      *
      * example:
+     *
      * 1. xxxEnum::hasName('CONST_NAME')
-     * // Actually called: $xxxEnum->_hasName('CONST_NAME')
+     *    Actually called: $xxxEnum->_hasName('CONST_NAME')
+     *
      * 2. xxxEnum::getDict()
-     * // Actually called: $xxxEnum->_getDict()
+     *    Actually called: $xxxEnum->_getDict()
+     *
+     * @see __call()
      *
      * @param  string $method
      * @param  array $arguments
@@ -271,6 +276,6 @@ abstract class Enum
      */
     public static function __callStatic($method, $arguments)
     {
-        return call_user_func_array([self::getInstance(), '_' . $method], $arguments);
+        return call_user_func_array([self::getInstance(), $method], $arguments);
     }
 }
