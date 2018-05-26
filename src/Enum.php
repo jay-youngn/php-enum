@@ -2,8 +2,8 @@
 
 namespace PHPEnum;
 
-use ReflectionClass;
 use BadMethodCallException;
+use ReflectionClass;
 use UnexpectedValueException;
 
 /**
@@ -22,13 +22,15 @@ abstract class Enum
 {
     /**
      * Name of current Enum data.
+
      * @var string
      */
     protected $name;
 
     /**
      * Value of current Enum data.
-     * @var integer|string
+
+     * @var int|string
      */
     protected $value;
 
@@ -36,6 +38,7 @@ abstract class Enum
      * Map of Enum values.
      *
      * const name => value
+     *
      * @var array
      */
     protected $valueMap = [];
@@ -44,6 +47,7 @@ abstract class Enum
      * Map of Enum names.
      *
      * value => const name
+     *
      * @var array
      */
     protected $nameMap = [];
@@ -52,12 +56,14 @@ abstract class Enum
      * Constant name dictionary.
      *
      * const name => display value
+     *
      * @var array
      */
     protected $nameDict = [];
 
     /**
-     * Save instance
+     * Save instance.
+     *
      * @var array
      */
     private static $__instance = [];

@@ -5,28 +5,30 @@ namespace PHPEnum\Demo;
 use PHPEnum\Enum;
 
 /**
- * custom global request code
+ * Custom global request code.
  */
 class RequestCode extends Enum
 {
     /**
-     * request success
-     * @var integer
+     * Request success.
+     *
+     * @var int
      */
     const SUCCESS = 0;
 
     /**
-     * request failure
-     * @var integer
+     * Request failure.
+     *
+     * @var int
      */
     const ERROR = 1;
 
     /**
-     * the display value for view
+     * The display value for view.
      */
     const __DICT = [
         self::SUCCESS => 'request success',
-        self::ERROR => 'request failure',
+        self::ERROR   => 'request failure',
     ];
 
 }
