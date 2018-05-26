@@ -1,8 +1,8 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use PHPEnum\Demo\RequestCode;
 use PHPEnum\Enum;
+use PHPUnit\Framework\TestCase;
 
 class BaseTest extends TestCase
 {
@@ -69,7 +69,7 @@ class BaseTest extends TestCase
         $this->assertTrue(RequestCode::SUCCESS === RequestCode::nameToValue($name_success));
         $this->assertTrue(RequestCode::ERROR === RequestCode::nameToValue($name_error));
 
-         /**
+        /**
          * 测试判断方法返回值
          */
         $this->assertTrue(RequestCode::hasValue(RequestCode::SUCCESS));
