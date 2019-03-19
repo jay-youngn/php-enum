@@ -41,7 +41,7 @@ abstract class Enum
      *
      * @var array
      */
-    protected $valueMap = [];
+    protected static $valueMap = [];
 
     /**
      * Map of Enum names.
@@ -50,7 +50,7 @@ abstract class Enum
      *
      * @var array
      */
-    protected $nameMap = [];
+    protected static $nameMap = [];
 
     /**
      * Constant name dictionary.
@@ -59,7 +59,7 @@ abstract class Enum
      *
      * @var array
      */
-    protected $nameDict = [];
+    protected static $nameDict = [];
 
     /**
      * Save instance.
@@ -74,12 +74,12 @@ abstract class Enum
     public function __construct($value = null)
     {
         // const name -> value
-        $this->valueMap = (new ReflectionClass(static::class))->getConstants();
+        static::$valueMap = (new ReflectionClass(static::class))->getConstants();
 
-        unset($this->valueMap['__DICT']);
+        unset(static::$valueMap['__DICT']);
 
         // value -> const name
-        $this->nameMap = array_flip($this->valueMap);
+        static::$nameMap = array_flip(static::$valueMap);
 
         if (! is_null($value)) {
             $this->name = $this->_valueToName($value);
@@ -87,8 +87,8 @@ abstract class Enum
         }
 
         // constname -> display text
-        foreach ($this->nameMap as $k => $v) {
-            $this->nameDict[$v] = static::__DICT[$k];
+        foreach (static::$nameMap as $k => $v) {
+            static::$nameDict[$v] = static::__DICT[$k];
         }
     }
 
@@ -100,7 +100,7 @@ abstract class Enum
      */
     protected function _hasName($constName)
     {
-        return in_array($constName, $this->nameMap, true);
+        return in_array($constName, static::$nameMap, true);
     }
 
     /**
@@ -112,7 +112,7 @@ abstract class Enum
      */
     protected function _hasValue($value, $strict = true)
     {
-        return in_array($value, $this->valueMap, $strict);
+        return in_array($value, static::$valueMap, $strict);
     }
 
     /**
@@ -128,7 +128,7 @@ abstract class Enum
             throw new UnexpectedValueException("Const {$constName} is not in Enum " . static::class);
         }
 
-        return $this->valueMap[$constName];
+        return static::$valueMap[$constName];
     }
 
     /**
@@ -144,7 +144,7 @@ abstract class Enum
             throw new UnexpectedValueException("Value {$value} is not in Enum " . static::class);
         }
 
-        return $this->nameMap[$value];
+        return static::$nameMap[$value];
     }
 
     /**
@@ -156,7 +156,7 @@ abstract class Enum
     protected function _transName($constName)
     {
         if ($this->_hasName($constName)) {
-            return $this->nameDict[$constName];
+            return static::$nameDict[$constName];
         }
 
         return $constName;
@@ -191,12 +191,12 @@ abstract class Enum
 
     protected function _getMap()
     {
-        return $this->valueMap;
+        return static::$valueMap;
     }
 
     protected function _getNameMap()
     {
-        return $this->nameMap;
+        return static::$nameMap;
     }
 
     protected function _getDict()
@@ -206,7 +206,7 @@ abstract class Enum
 
     protected function _getNameDict()
     {
-        return $this->nameDict;
+        return static::$nameDict;
     }
 
     /**
