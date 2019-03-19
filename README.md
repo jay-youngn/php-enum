@@ -135,16 +135,4 @@ return:
 object(PHPEnum\Demo\RequestCode)
   protected 'name' => string 'SUCCESS'
   protected 'value' => int 0
-  protected 'valueMap' =>
-    array (size=2)
-      'SUCCESS' => int 0
-      'ERROR' => int 1
-  protected 'nameMap' =>
-    array (size=2)
-      0 => string 'SUCCESS'
-      1 => string 'ERROR'
-  protected 'nameDict' =>
-    array (size=2)
-      'SUCCESS' => string 'request success'
-      'ERROR' => string 'request failure'
 ```
