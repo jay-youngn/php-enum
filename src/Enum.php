@@ -16,6 +16,7 @@ use UnexpectedValueException;
  *    |___/                        |_|
  *
  * @author  gjy <ginnerpeace@live.com>
+ *
  * @link    https://github.com/ginnerpeace/php-enum
  */
 abstract class Enum
@@ -23,14 +24,14 @@ abstract class Enum
     /**
      * Name of current Enum data.
      *
-     * @var  string
+     * @var string
      */
     protected $name;
 
     /**
      * Value of current Enum data.
      *
-     * @var  int|string
+     * @var int|string
      */
     protected $value;
 
@@ -39,7 +40,7 @@ abstract class Enum
      *
      * const name => value
      *
-     * @var  array
+     * @var array
      */
     protected static $valueMap = [];
 
@@ -48,7 +49,7 @@ abstract class Enum
      *
      * value => const name
      *
-     * @var  array
+     * @var array
      */
     protected static $nameMap = [];
 
@@ -57,14 +58,14 @@ abstract class Enum
      *
      * const name => display value
      *
-     * @var  array
+     * @var array
      */
     protected static $nameDict = [];
 
     /**
      * Save instance.
      *
-     * @var  array
+     * @var array
      */
     private static $__instance = [];
 
@@ -95,8 +96,8 @@ abstract class Enum
     /**
      * Checks if the given constant name exists in the enum.
      *
-     * @param   string  $constName
-     * @return  bool
+     * @param  string $constName
+     * @return bool
      */
     protected function _hasName($constName)
     {
@@ -106,9 +107,9 @@ abstract class Enum
     /**
      * Checks if the given value exists in the enum.
      *
-     * @param   mixed  $value
-     * @param   bool  $strict
-     * @return  bool
+     * @param  mixed $value
+     * @param  bool  $strict
+     * @return bool
      */
     protected function _hasValue($value, $strict = true)
     {
@@ -118,9 +119,10 @@ abstract class Enum
     /**
      * Translate the given constant name to the value.
      *
-     * @param   string  $constName
-     * @return  mixed
-     * @throws  UnexpectedValueException
+     * @param  string $constName
+     * @return mixed
+     *
+     * @throws UnexpectedValueException
      */
     protected function _nameToValue($constName)
     {
@@ -134,9 +136,10 @@ abstract class Enum
     /**
      * Translate the given value to the constant name.
      *
-     * @param   mixed  $value
-     * @return  string
-     * @throws  UnexpectedValueException
+     * @param  mixed $value
+     * @return string
+     *
+     * @throws UnexpectedValueException
      */
     protected function _valueToName($value)
     {
@@ -150,8 +153,8 @@ abstract class Enum
     /**
      * Translate the given constant name to the display value.
      *
-     * @param   string  $constName
-     * @return  string
+     * @param  string $constName
+     * @return string
      */
     protected function _transName($constName)
     {
@@ -165,8 +168,8 @@ abstract class Enum
     /**
      * Translate the given value to the display value.
      *
-     * @param   mixed  $value
-     * @return  string
+     * @param  mixed $value
+     * @return string
      */
     protected function _transValue($value)
     {
@@ -212,7 +215,7 @@ abstract class Enum
     /**
      * Create new instance for current class.
      *
-     * @return  static
+     * @return static
      */
     private static function createInstance()
     {
@@ -222,7 +225,7 @@ abstract class Enum
     /**
      * Get current class instance from the static attribute.
      *
-     * @return  PHPEnum\Enum
+     * @return PHPEnum\Enum
      */
     public static function getInstance()
     {
@@ -249,9 +252,9 @@ abstract class Enum
      * 2. (new Enum(1))->getDict()
      *    Actually called: $xxxEnum->_getDict()
      *
-     * @param   string  $method
-     * @param   array  $arguments
-     * @return  mixed
+     * @param  string $method
+     * @param  array  $arguments
+     * @return mixed
      */
     public function __call($method, $arguments)
     {
@@ -259,7 +262,20 @@ abstract class Enum
             throw new BadMethodCallException('Method ' . $invoking . ' does not exists');
         }
 
-        return call_user_func_array([$this, $invoking], $arguments);
+        switch (count($arguments)) {
+            case 0:
+                return $this->$invoking();
+            case 1:
+                return $this->$invoking($arguments[0]);
+            case 2:
+                return $this->$invoking($arguments[0], $arguments[1]);
+            case 3:
+                return $this->$invoking($arguments[0], $arguments[1], $arguments[2]);
+            case 4:
+                return $this->$invoking($arguments[0], $arguments[1], $arguments[2], $arguments[3]);
+            default:
+                return call_user_func_array([$this, $invoking], $arguments);
+        }
     }
 
     /**
@@ -276,12 +292,27 @@ abstract class Enum
      *
      * @see __call()
      *
-     * @param   string  $method
-     * @param   array  $arguments
-     * @return  mixed
+     * @param  string $method
+     * @param  array  $arguments
+     * @return mixed
      */
     public static function __callStatic($method, $arguments)
     {
-        return call_user_func_array([self::getInstance(), $method], $arguments);
+        $instance = self::getInstance();
+
+        switch (count($arguments)) {
+            case 0:
+                return $instance->$method();
+            case 1:
+                return $instance->$method($arguments[0]);
+            case 2:
+                return $instance->$method($arguments[0], $arguments[1]);
+            case 3:
+                return $instance->$method($arguments[0], $arguments[1], $arguments[2]);
+            case 4:
+                return $instance->$method($arguments[0], $arguments[1], $arguments[2], $arguments[3]);
+            default:
+                return call_user_func_array([$instance, $method], $arguments);
+        }
     }
 }

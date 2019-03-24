@@ -30,5 +30,4 @@ class RequestCode extends Enum
         self::SUCCESS => 'request success',
         self::ERROR   => 'request failure',
     ];
-
 }
