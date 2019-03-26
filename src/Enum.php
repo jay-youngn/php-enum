@@ -158,11 +158,7 @@ abstract class Enum
      */
     protected function _transName($constName)
     {
-        if ($this->_hasName($constName)) {
-            return static::$nameDict[static::class][$constName];
-        }
-
-        return $constName;
+        return isset(static::$nameDict[static::class][$constName]) ? static::$nameDict[static::class][$constName] : $constName;
     }
 
     /**
@@ -173,11 +169,7 @@ abstract class Enum
      */
     protected function _transValue($value)
     {
-        if ($this->_hasValue($value)) {
-            return static::__DICT[$value];
-        }
-
-        return $value;
+        return isset(static::__DICT[$value]) ? static::__DICT[$value] : $value;
     }
 
     /** getters */
