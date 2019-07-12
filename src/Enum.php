@@ -63,17 +63,48 @@ abstract class Enum
     protected static $nameDict = [];
 
     /**
+     * The array of booted enums.
+     *
+     * @var array
+     */
+    protected static $booted = [];
+
+    /**
      * Save instance.
      *
      * @var array
      */
     private static $__instance = [];
 
+
     /**
      * Create const list for current class.
+     *
+     * @param  mixed|null $value
      */
     public function __construct($value = null)
     {
+        static:: bootIfNotBooted();
+
+        if (! is_null($value)) {
+            $this->name = $this->_valueToName($value);
+            $this->value = $value;
+        }
+    }
+
+    /**
+     * Check if the enum needs to be booted and if so, do it.
+     *
+     * @return void
+     */
+    protected static function bootIfNotBooted()
+    {
+        if (isset(static::$booted[static::class])) {
+            return;
+        }
+
+        static::$booted[static::class] = true;
+
         // const name -> value
         static::$valueMap[static::class] = (new ReflectionClass(static::class))->getConstants();
 
@@ -81,11 +112,6 @@ abstract class Enum
 
         // value -> const name
         static::$nameMap[static::class] = array_flip(static::$valueMap[static::class]);
-
-        if (! is_null($value)) {
-            $this->name = $this->_valueToName($value);
-            $this->value = $value;
-        }
 
         // constname -> display text
         foreach (static::$nameMap[static::class] as $k => $v) {
