@@ -127,7 +127,7 @@ $requestSuccess->getNameDict();
 ];
 
 // var_dump($requestSuccess)
-object(PHPEnum\Demo\RequestCode)
+object(RequestCode)
   protected 'name' => string 'SUCCESS'
   protected 'value' => int 0
 ```
