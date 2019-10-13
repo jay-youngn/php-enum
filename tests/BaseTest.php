@@ -1,6 +1,5 @@
 <?php
 
-use PHPEnum\Demo\RequestCode;
 use PHPEnum\Enum;
 use PHPUnit\Framework\TestCase;
 
@@ -46,9 +45,10 @@ class BaseTest extends TestCase
 
     public function testStaticable()
     {
-        /**
-         * 测试基本静态使用以及 name value转换
-         */
+        /////////////////////
+        // Test basic use. //
+        /////////////////////
+
         $this->assertInternalType('int', RequestCode::SUCCESS);
         $this->assertInternalType('int', RequestCode::ERROR);
 
@@ -57,21 +57,22 @@ class BaseTest extends TestCase
         $this->assertInternalType('array', RequestCode::getDict());
         $this->assertInternalType('array', RequestCode::getNameDict());
 
-        $name_success = RequestCode::valueToName(RequestCode::SUCCESS);
-        $name_error = RequestCode::valueToName(RequestCode::ERROR);
+        $nameSuccess = RequestCode::valueToName(RequestCode::SUCCESS);
+        $nameError = RequestCode::valueToName(RequestCode::ERROR);
 
-        $this->assertInternalType('string', $name_success);
-        $this->assertInternalType('string', $name_error);
+        $this->assertInternalType('string', $nameSuccess);
+        $this->assertInternalType('string', $nameError);
 
-        $this->assertTrue(RequestCode::hasName($name_success));
-        $this->assertTrue(RequestCode::hasName($name_error));
+        $this->assertTrue(RequestCode::hasName($nameSuccess));
+        $this->assertTrue(RequestCode::hasName($nameError));
 
-        $this->assertTrue(RequestCode::SUCCESS === RequestCode::nameToValue($name_success));
-        $this->assertTrue(RequestCode::ERROR === RequestCode::nameToValue($name_error));
+        $this->assertTrue(RequestCode::SUCCESS === RequestCode::nameToValue($nameSuccess));
+        $this->assertTrue(RequestCode::ERROR === RequestCode::nameToValue($nameError));
 
-        /**
-         * 测试判断方法返回值
-         */
+        /////////////////////////////////
+        // Test determination methods. //
+        /////////////////////////////////
+
         $this->assertTrue(RequestCode::hasValue(RequestCode::SUCCESS));
         $this->assertTrue(RequestCode::hasValue(RequestCode::ERROR));
 
@@ -84,34 +85,34 @@ class BaseTest extends TestCase
 
         $this->assertFalse(RequestCode::hasName('some impossible name.'));
 
-        /**
-         * 测试get方法返回值
-         */
+        //////////////////
+        // Test getter. //
+        //////////////////
+
         $this->assertArrayHasKey(RequestCode::SUCCESS, RequestCode::getNameMap());
         $this->assertArrayHasKey(RequestCode::ERROR, RequestCode::getNameMap());
         $this->assertArrayHasKey(RequestCode::SUCCESS, RequestCode::getDict());
         $this->assertArrayHasKey(RequestCode::ERROR, RequestCode::getDict());
 
 
-        $this->assertArrayHasKey($name_success, RequestCode::getMap());
-        $this->assertArrayHasKey($name_error, RequestCode::getMap());
-        $this->assertArrayHasKey($name_success, RequestCode::getNameDict());
-        $this->assertArrayHasKey($name_error, RequestCode::getNameDict());
+        $this->assertArrayHasKey($nameSuccess, RequestCode::getMap());
+        $this->assertArrayHasKey($nameError, RequestCode::getMap());
+        $this->assertArrayHasKey($nameSuccess, RequestCode::getNameDict());
+        $this->assertArrayHasKey($nameError, RequestCode::getNameDict());
 
+        //////////////////////////////////
+        // Test trans to display value. //
+        //////////////////////////////////
 
-        /**
-         * 测试trans方法返回值
-         */
         $this->assertEquals(
             RequestCode::transValue(RequestCode::SUCCESS),
-            RequestCode::transName($name_success)
+            RequestCode::transName($nameSuccess)
         );
 
         $this->assertEquals(
             RequestCode::transValue(RequestCode::ERROR),
-            RequestCode::transName($name_error)
+            RequestCode::transName($nameError)
         );
-
     }
 
     /**

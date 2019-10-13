@@ -13,7 +13,8 @@
 ## Getting started
 
 ### Install
-```shell
+
+```bash
 composer require ginnerpeace/php-enum
 ```
 
@@ -21,8 +22,6 @@ composer require ginnerpeace/php-enum
 Create a class for an enum data, like this:
 ```php
 <?php
-
-namespace PHPEnum\Demo;
 
 use PHPEnum\Enum;
 
@@ -45,8 +44,6 @@ class RequestCode extends Enum
 #### - Scope Resolution Operator
 ```php
 <?php
-
-use PHPEnum\Demo\RequestCode;
 
 // Use value.
 RequestCode::SUCCESS;                   // 0
@@ -80,39 +77,37 @@ RequestCode::transValue(9);             // 9
 
 // Some Getter methods.
 RequestCode::getMap();
-return:
+// dump:
 [
     'SUCCESS' => 0,
     'ERROR' => 1,
-]
+];
 
 RequestCode::getNameMap();
-return:
+// dump:
 [
     0 => 'SUCCESS',
     1 => 'ERROR',
-]
+];
 
 RequestCode::getDict();
-return:
+// dump:
 [
     0 => 'request success',
     1 => 'request failure',
-]
+];
 
 RequestCode::getNameDict();
-return:
+// dump:
 [
     'SUCCESS' => 'request success',
     'ERROR' => 'request failure',
-]
+];
 ```
 
 #### - Instantiable
 ```php
 <?php
-
-use PHPEnum\Demo\RequestCode;
 
 // create instance via value
 $requestSuccess = new RequestCode(0);
@@ -125,11 +120,11 @@ echo $requestSuccess; // '0'
 // Same as Staticable use.
 // It is implemented in __call and __callStatic
 $requestSuccess->getNameDict();
-return:
+// dump:
 [
     'SUCCESS' => 'request success',
     'ERROR' => 'request failure',
-]
+];
 
 // var_dump($requestSuccess)
 object(PHPEnum\Demo\RequestCode)

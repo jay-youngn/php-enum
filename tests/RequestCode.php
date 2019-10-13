@@ -1,7 +1,5 @@
 <?php
 
-namespace PHPEnum\Demo;
-
 use PHPEnum\Enum;
 
 /**
