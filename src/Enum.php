@@ -9,15 +9,7 @@ use UnexpectedValueException;
 /**
  * Basic class for php enum.
  *
- *     __ _(_)_ __  _ __   ___ _ __ _ __   ___  __ _  ___ ___
- *    / _` | | '_ \| '_ \ / _ \ '__| '_ \ / _ \/ _` |/ __/ _ \
- *   | (_| | | | | | | | |  __/ |  | |_) |  __/ (_| | (_|  __/
- *    \__, |_|_| |_|_| |_|\___|_|  | .__/ \___|\__,_|\___\___|
- *    |___/                        |_|
- *
- * @author  gjy <ginnerpeace@live.com>
- *
- * @link    https://github.com/ginnerpeace/php-enum
+ * @link https://github.com/ginnerpeace/php-enum
  */
 abstract class Enum
 {
@@ -80,7 +72,7 @@ abstract class Enum
     /**
      * Create const list for current class.
      *
-     * @param  mixed|null $value
+     * @param mixed|null $value
      */
     public function __construct($value = null)
     {
@@ -90,6 +82,31 @@ abstract class Enum
             $this->name = $this->_valueToName($value);
             $this->value = $value;
         }
+    }
+
+    /**
+     * Get name of Enum instance.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get value of Enum instance.
+     *
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->value;
     }
 
     /**
@@ -198,33 +215,45 @@ abstract class Enum
         return isset(static::__DICT[$value]) ? static::__DICT[$value] : $value;
     }
 
-    /** getters */
+    ///////////////////////////////////////////////////////////////////
+    ///////////////////////// SPECIFIC GETTERS ////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
-    }
-
+    /**
+     * Get map for all values, key by const name.
+     *
+     * @return array
+     */
     protected function _getMap()
     {
         return static::$valueMap[static::class];
     }
 
+    /**
+     * Get map for all names, key by value.
+     *
+     * @return array
+     */
     protected function _getNameMap()
     {
         return static::$nameMap[static::class];
     }
 
+    /**
+     * Get map for all display values, key by value.
+     *
+     * @return array
+     */
     protected function _getDict()
     {
         return static::__DICT;
     }
 
+    /**
+     * Get map for all display values, key by const name.
+     *
+     * @return array
+     */
     protected function _getNameDict()
     {
         return static::$nameDict[static::class];
@@ -235,9 +264,9 @@ abstract class Enum
      *
      * @return static
      */
-    private static function createInstance()
+    private static function createEmptyInstance()
     {
-        return new static;
+        return new static(null);
     }
 
     /**
@@ -248,15 +277,10 @@ abstract class Enum
     public static function getInstance()
     {
         if (empty(self::$__instance[static::class])) {
-            self::$__instance[static::class] = self::createInstance();
+            self::$__instance[static::class] = self::createEmptyInstance();
         }
 
         return self::$__instance[static::class];
-    }
-
-    public function __toString()
-    {
-        return (string) $this->value;
     }
 
     /**
