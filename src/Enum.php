@@ -14,6 +14,13 @@ use UnexpectedValueException;
 abstract class Enum
 {
     /**
+     * Map for all display values.
+     *
+     * @var array
+     */
+    const __DICT = array();
+
+    /**
      * Name of current Enum data.
      *
      * @var string
@@ -34,7 +41,7 @@ abstract class Enum
      *
      * @var array
      */
-    protected static $valueMap = [];
+    protected static $valueMap = array();
 
     /**
      * Map of Enum names.
@@ -43,7 +50,7 @@ abstract class Enum
      *
      * @var array
      */
-    protected static $nameMap = [];
+    protected static $nameMap = array();
 
     /**
      * Constant name dictionary.
@@ -52,21 +59,21 @@ abstract class Enum
      *
      * @var array
      */
-    protected static $nameDict = [];
+    protected static $nameDict = array();
 
     /**
      * The array of booted enums.
      *
      * @var array
      */
-    protected static $booted = [];
+    protected static $booted = array();
 
     /**
      * Save instance.
      *
      * @var array
      */
-    private static $__instance = [];
+    private static $__instance = array();
 
 
     /**
