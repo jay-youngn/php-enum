@@ -7,9 +7,20 @@ use ReflectionClass;
 use UnexpectedValueException;
 
 /**
- * Basic class for php enum.
+ * Gives the ability to emulate and get enumeration data natively in PHP.
  *
  * @link https://github.com/ginnerpeace/php-enum
+ *
+ * @method static bool hasName(string $constName) Checks if the given constant name exists in the enum.
+ * @method static bool hasValue(int|float|string $value, bool $strict = true) Checks if the given value exists in the enum.
+ * @method static int|float|string nameToValue(string $constName) Translate the given constant name to the value.
+ * @method static string valueToName(int|float|string $value) Translate the given value to the constant name.
+ * @method static string transName(string $constName) Translate the given constant name to the display value.
+ * @method static string transValue(int|float|string $value) Translate the given value to the display value.
+ * @method static array getMap() Get map for all values, key by const name.
+ * @method static array getNameMap() Get map for all names, key by value.
+ * @method static array getDict() Get map for all display values, key by value.
+ * @method static array getNameDict() Get map for all display values, key by const name.
  */
 abstract class Enum
 {
@@ -221,10 +232,6 @@ abstract class Enum
     {
         return isset(static::__DICT[$value]) ? static::__DICT[$value] : $value;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ///////////////////////// SPECIFIC GETTERS ////////////////////////
-    ///////////////////////////////////////////////////////////////////
 
     /**
      * Get map for all values, key by const name.
