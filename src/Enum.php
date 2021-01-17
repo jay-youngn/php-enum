@@ -25,13 +25,6 @@ use UnexpectedValueException;
 abstract class Enum
 {
     /**
-     * Map for all display values.
-     *
-     * @var array
-     */
-    const __DICT = array();
-
-    /**
      * Name of current Enum data.
      *
      * @var string
@@ -86,7 +79,6 @@ abstract class Enum
      */
     private static $__instance = array();
 
-
     /**
      * Create const list for current class.
      *
@@ -94,7 +86,7 @@ abstract class Enum
      */
     public function __construct($value = null)
     {
-        static:: bootIfNotBooted();
+        static::bootIfNotBooted();
 
         if (! is_null($value)) {
             $this->name = $this->_valueToName($value);
@@ -148,9 +140,13 @@ abstract class Enum
         // value -> const name
         static::$nameMap[static::class] = array_flip(static::$valueMap[static::class]);
 
-        // constname -> display text
-        foreach (static::$nameMap[static::class] as $k => $v) {
-            static::$nameDict[static::class][$v] = static::__DICT[$k];
+        if (defined('static::__DICT')) {
+            // constname -> display text
+            foreach (static::$nameMap[static::class] as $k => $v) {
+                static::$nameDict[static::class][$v] = static::__DICT[$k];
+            }
+        } else {
+            static::$nameDict[static::class] = array();
         }
     }
 
@@ -230,6 +226,10 @@ abstract class Enum
      */
     protected function _transValue($value)
     {
+        if (! defined('static::__DICT')) {
+            return $value;
+        }
+
         return isset(static::__DICT[$value]) ? static::__DICT[$value] : $value;
     }
 
@@ -260,7 +260,7 @@ abstract class Enum
      */
     protected function _getDict()
     {
-        return static::__DICT;
+        return defined('static::__DICT') ? static::__DICT : array();
     }
 
     /**
