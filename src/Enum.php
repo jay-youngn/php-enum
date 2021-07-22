@@ -184,7 +184,7 @@ abstract class Enum
     protected function _nameToValue($constName)
     {
         if (! $this->_hasName($constName)) {
-            throw new UnexpectedValueException("Const {$constName} is not in Enum " . static::class);
+            throw new UnexpectedValueException("Const {$constName} is not matched by Enum " . static::class);
         }
 
         return static::$valueMap[static::class][$constName];
@@ -201,7 +201,11 @@ abstract class Enum
     protected function _valueToName($value)
     {
         if (! $this->_hasValue($value)) {
-            throw new UnexpectedValueException("Value {$value} is not in Enum " . static::class);
+            $type = gettype($value);
+
+            throw new UnexpectedValueException(
+                sprintf("%s value [%s] is not matched by Enum %s", ucfirst($type), $value, static::class)
+            );
         }
 
         return static::$nameMap[static::class][$value];
